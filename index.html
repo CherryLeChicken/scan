@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barcode ya</title>
+    <title>Barcode Scanner</title>
     <style>
         canvas.drawing, canvas.drawingBuffer {
             position: absolute;
@@ -22,15 +22,14 @@
     </style>
 </head>
 <body>
-    <!-- scanner -->
+    <!-- Scanner -->
     <div id="scanner-container"></div>
     <input type="button" id="btn" value="Open Scanner" />
     <input type="button" id="restart-btn" value="Restart Scanner" style="display:none;" />
     <div id="product-info"></div>
 
-    <!-- scripts -->
+    <!-- Scripts -->
     <script src="https://cdn.rawgit.com/serratus/quaggaJS/0420d5e0/dist/quagga.min.js"></script>
-    <script type="module" src="script.js"></script>
-
+    <script src="script.js"></script>
 </body>
 </html>
