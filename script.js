@@ -132,22 +132,19 @@ document.addEventListener('DOMContentLoaded', function () {
       .then(data => {
         console.log('Response from server:', data);
   
-        // Display the response in the <p id="ollama-response"> tag
-        //const ollamaResponse = document.getElementById('ollama-response');
-        //console.log('ollamaResponse element:', ollamaResponse);
-        infoDiv.textContent = `Canadian Alternatives: ${data}`;
-        // if (ollamaResponse) {
-        //   infoDiv.textContent.textContent = `Canadian Alternatives: ${data}`;
-        // } else {
-        //   console.error('ollama-response element not found!');
-        // }
+        // Remove surrounding quotes from the response
+        const cleanedData = data.replace(/^"|"$/g, '');
+  
+        // Replace \n with <br> for HTML display
+        const formattedData = cleanedData.replace(/\n/g, '<br>');
+
+
+        // Display the response in the infoDiv using innerHTML
+        infoDiv.innerHTML = `<p>Canadian Alternatives: ${formattedData}</p>`;
       })
       .catch(error => {
         console.error('Error fetching alternatives:', error);
-        const ollamaResponse = document.getElementById('ollama-response');
-        if (ollamaResponse) {
-          ollamaResponse.textContent = `Error: ${error.message}`;
-        }
+        infoDiv.innerHTML = `<p>Error: ${error.message}</p>`;
       });
   }
 
