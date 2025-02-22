@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function suggestCanadianAlternatives(productName) {
-    console.log('Fetching Canadian alternatives for:', productName); // Log the product name
+    console.log('Fetching Canadian alternatives for:', productName);
     fetch('http://localhost:3000/api/suggest-canadian-alternatives', {
       method: 'POST',
       headers: {
@@ -123,23 +123,31 @@ document.addEventListener('DOMContentLoaded', function () {
       body: JSON.stringify({ productName }),
     })
       .then(response => {
-        console.log('Response status:', response.status); // Log the response status
+        console.log('Response status:', response.status);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.json();
+        return response.text(); // Use .text() for plain text responses
       })
       .then(data => {
-        console.log('Response from server:', data); // Log the server response
-        if (data.alternatives) {
-          infoDiv.innerHTML += `<p>Canadian alternatives: ${data.alternatives}</p>`;
-        } else {
-          infoDiv.innerHTML += '<p>No Canadian alternatives found.</p>';
-        }
+        console.log('Response from server:', data);
+  
+        // Display the response in the <p id="ollama-response"> tag
+        //const ollamaResponse = document.getElementById('ollama-response');
+        //console.log('ollamaResponse element:', ollamaResponse);
+        infoDiv.textContent = `Canadian Alternatives: ${data}`;
+        // if (ollamaResponse) {
+        //   infoDiv.textContent.textContent = `Canadian Alternatives: ${data}`;
+        // } else {
+        //   console.error('ollama-response element not found!');
+        // }
       })
       .catch(error => {
         console.error('Error fetching alternatives:', error);
-        infoDiv.innerHTML += `<p>Error: ${error.message}</p>`;
+        const ollamaResponse = document.getElementById('ollama-response');
+        if (ollamaResponse) {
+          ollamaResponse.textContent = `Error: ${error.message}`;
+        }
       });
   }
 

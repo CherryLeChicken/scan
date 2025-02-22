@@ -6,7 +6,7 @@
     <title>sCAN</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        
+        /* Add any custom styles here */
     </style>
 </head>
 <body>
@@ -16,8 +16,10 @@
     <div id="scanner-container"></div>
     <input type="button" id="btn" value="Open Scanner" />
     <input type="button" id="restart-btn" value="Restart Scanner" style="display:none;" />
-    <div id="product-info"></div>
-
+    <div id="product-info">
+        <p id="ollama-response"></p><!-- Add this line -->
+    </div>
+    
     <!-- Scripts -->
     <script src="https://cdn.rawgit.com/serratus/quaggaJS/0420d5e0/dist/quagga.min.js"></script>
     <script src="script.js"></script>
