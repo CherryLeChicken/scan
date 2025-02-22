@@ -15,5 +15,7 @@ These APIs and databases work together to provide accurate, up-to-date, and rele
 
 sCAN was created during Hack Canada 2025.
 ## Made by
-Cherry Ke
-Emma Zhang
+
+
+* Cherry Ke
+* Emma Zhang
