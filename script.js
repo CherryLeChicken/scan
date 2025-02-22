@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const restartBtn = document.getElementById('restart-btn');
     const startBtn = document.getElementById('btn');
     let scannerIsRunning = false;
+<<<<<<< Updated upstream
 
     async function fetchCanadianAlternatives(productName) {
         try {
@@ -26,8 +27,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+=======
+  
+>>>>>>> Stashed changes
     function startScanner() {
-        Quagga.init({
+      Quagga.init({
             inputStream: {
                 name: "Live",
                 type: "LiveStream",
@@ -98,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         });
+<<<<<<< Updated upstream
 
         Quagga.onDetected(async function (result) {
             const code = result.codeResult.code;
@@ -138,19 +143,90 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+=======
+  
+      Quagga.onDetected(function (result) {
+        const code = result.codeResult.code;
+        console.log("Barcode detected: " + code);
+        infoDiv.textContent = "Processing barcode...";
+        infoDiv.className = 'loading';
+  
+        fetch(`https://world.openfoodfacts.org/api/v0/product/${code}.json`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === 1) {
+              const product = data.product;
+              if (product.countries_tags && product.countries_tags.includes('en:canada')) {
+                infoDiv.innerHTML = `<p>${product.product_name} is made in Canada.</p>`;
+                infoDiv.className = 'success';
+              } else {
+                infoDiv.innerHTML = `<p>${product.product_name} is not made in Canada.</p>`;
+                infoDiv.className = 'error';
+                suggestCanadianAlternatives(product.product_name);
+              }
+            } else {
+              infoDiv.innerHTML = `<p>Product with barcode ${code} not found.</p>`;
+              infoDiv.className = 'error';
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            infoDiv.textContent = "Error retrieving product information.";
+            infoDiv.className = 'error';
+          });
+  
+        Quagga.stop();
+        scannerIsRunning = false;
+        restartBtn.style.display = 'inline-block';
+      });
+    }
+  
+    function suggestCanadianAlternatives(productName) {
+        fetch('http://localhost:3000/api/suggest-canadian-alternatives', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ productName }),
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            if (data.alternatives) {
+              infoDiv.innerHTML += `<p>Canadian alternatives: ${data.alternatives}</p>`;
+            } else {
+              infoDiv.innerHTML += '<p>No Canadian alternatives found.</p>';
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching alternatives:', error);
+            infoDiv.innerHTML += '<p>Error retrieving Canadian alternatives.</p>';
+          });
+      }
+  
+>>>>>>> Stashed changes
     startBtn.addEventListener('click', function () {
-        if (!scannerIsRunning) {
-            startScanner();
-            startBtn.style.display = 'none';
-            restartBtn.style.display = 'none';
-        }
+      if (!scannerIsRunning) {
+        startScanner();
+        startBtn.style.display = 'none';
+        restartBtn.style.display = 'none';
+      }
     });
-
+  
     restartBtn.addEventListener('click', function () {
-        if (!scannerIsRunning) {
-            startScanner();
-            startBtn.style.display = 'none';
-            restartBtn.style.display = 'none';
-        }
+      if (!scannerIsRunning) {
+        startScanner();
+        startBtn.style.display = 'none';
+        restartBtn.style.display = 'none';
+      }
     });
+<<<<<<< Updated upstream
 });
+=======
+  });
+  
+>>>>>>> Stashed changes
