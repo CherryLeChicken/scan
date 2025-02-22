@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function suggestCanadianAlternatives(productName) {
+    console.log('Fetching Canadian alternatives for:', productName); // Log the product name
     fetch('http://localhost:3000/api/suggest-canadian-alternatives', {
       method: 'POST',
       headers: {
@@ -122,6 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
       body: JSON.stringify({ productName }),
     })
       .then(response => {
+        console.log('Response status:', response.status); // Log the response status
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
