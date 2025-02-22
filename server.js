@@ -12,40 +12,51 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
+import { spawn } from 'node:child_process';
 
 app.post('/api/suggest-canadian-alternatives', async (req, res) => {
-    console.log('Request received:', req.body); // Log the request body
-    const { productName } = req.body;
-  
-    if (!productName) {
-      return res.status(400).json({ error: 'Product name is required' });
-    }
-  
-    const prompt = `What are three Canadian-made alternatives for ${productName}? Give a short response.`;
-    console.log('Prompt:', prompt); // Log the prompt
-  
-    try {
-        const command = `/usr/local/bin/ollama run mistral "${prompt}"`;
+    console.log('Request received:', req.body);
 
-      console.log('Running command:', command); // Log the command
-      exec(command, { maxBuffer: 1024 * 1024, timeout: 90000 }, (error, stdout, stderr) => {
-        console.log("Here")
-        if (error) {
-          console.log('Error running Ollama:', error.message);
-          return res.status(500).json({ error: `Error: ${error.message}` });
-        }
-        if (stderr) {
-          console.log('Ollama stderr:', stderr);
-        }
-        console.log('Raw stdout:', stdout.length > 0 ? stdout : 'No output received');
-        res.json({ alternatives: stdout.trim() });
-      });
-      
-    } catch (error) {
-      console.log('Error:', error);
-      res.status(500).json({ error: 'Unable to fetch alternatives.' });
+    const { productName } = req.body;
+    if (!productName) {
+        return res.status(400).json({ error: 'Product name is required' });
     }
-  });
+
+    const prompt = `What are three Canadian-made alternatives for ${productName}? Give a short response.`;
+    console.log('Prompt:', prompt);
+
+    const process = spawn('/usr/local/bin/ollama', ['run', 'mistral', prompt], { shell: true });
+
+    let output = '';
+    let errorOutput = '';
+
+    process.stdout.on('data', (data) => {
+        console.log('Ollama stdout:', data.toString());
+        output += data.toString();
+    });
+
+    process.stderr.on('data', (data) => {
+        console.log('Ollama stderr:', data.toString());
+        errorOutput += data.toString();
+    });
+
+    process.on('close', (code) => {
+        console.log(`Ollama process exited with code ${code}`);
+        if (code === 0) {
+            res.json({ alternatives: output.trim() });
+        } else {
+            res.status(500).json({ error: `Ollama failed with code ${code}: ${errorOutput}` });
+        }
+    });
+
+    process.on('error', (err) => {
+        console.error('Failed to start Ollama:', err);
+        res.status(500).json({ error: 'Failed to start Ollama' });
+    });
+});
+
+
+
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

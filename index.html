@@ -3,25 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barcode Scanner</title>
+    <title>sCAN</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
-        canvas.drawing, canvas.drawingBuffer {
-            position: absolute;
-            left: 0;
-            top: 0;
-        }
-        #product-info.loading {
-            color: blue;
-        }
-        #product-info.success {
-            color: green;
-        }
-        #product-info.error {
-            color: red;
-        }
+        
     </style>
 </head>
 <body>
+    <h1>sCAN</h1>
+    <p>Get started by opening the scanner and scanning a barcode!</p>
     <!-- Scanner -->
     <div id="scanner-container"></div>
     <input type="button" id="btn" value="Open Scanner" />
