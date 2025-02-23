@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import ollama from 'ollama';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -13,6 +15,18 @@ const port = 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Get the directory name of the current module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static files from the root directory
+app.use(express.static(__dirname));
+
+// Serve the index.html file at the root path
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // API endpoint to suggest Canadian alternatives
 app.post('/api/suggest-canadian-alternatives', async (req, res) => {
