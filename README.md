@@ -12,6 +12,8 @@ Node.js with Ollama: For generating Canadian-made alternatives, the program inte
 sCAN was created during Hack Canada 2025.
 
 ## Instructions
+Please make sure to have [node.js](https://nodejs.org/en) and [git](https://git-scm.com/) installed.
+
 1. Clone the repository
 ```sh
 git clone https://github.com/CherryLeChicken/scan
