@@ -14,6 +14,21 @@ Node.js with Ollama: For generating Canadian-made alternatives, the program inte
 These APIs and databases work together to provide accurate, up-to-date, and relevant product data, enhancing the user experience by offering localized product suggestions and information based on barcode scans.
 
 sCAN was created during Hack Canada 2025.
+
+## Instructions
+1. Clone the repository
+```sh
+git clone https://github.com/CherryLeChicken/scan
+```
+2. Install dependencies
+```sh
+npm install
+```
+3. Start the server
+```sh 
+npm start
+```
+
 ## Made by
 
 
